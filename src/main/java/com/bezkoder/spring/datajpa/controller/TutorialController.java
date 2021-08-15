@@ -14,21 +14,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bezkoder.spring.datajpa.model.Tutorial;
 import com.bezkoder.spring.datajpa.repository.TutorialRepository;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin
 @RestController
-@RequestMapping("/api")
 public class TutorialController {
 
     @Autowired
     TutorialRepository tutorialRepository;
-    @GetMapping("/tutorials")
+    @GetMapping("/patients")
     public ResponseEntity<List<Tutorial>> getAllPatients() {
         try {
             List<Tutorial> tutorials = new ArrayList<Tutorial>();
@@ -45,7 +42,7 @@ public class TutorialController {
         }
     }
 
-    @GetMapping("/tutorials/{id}")
+    @GetMapping("/patients/{id}")
     public ResponseEntity<Tutorial> getPatientById(@PathVariable("id") long id) {
         Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
@@ -56,18 +53,19 @@ public class TutorialController {
         }
     }
 
-    @PostMapping("/tutorials")
-    public ResponseEntity<Tutorial> addPatient(@RequestBody Tutorial tutorial) {
+    @PostMapping("/patients")
+    public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
         try {
-            Tutorial _tutorial = tutorialRepository
-                    .save(new Tutorial( "nama pasiennnn", "28 05 2009", "08377373"));
+            System.out.println(tutorial);
+            Tutorial _tutorial = tutorialRepository.save(new Tutorial(tutorial.getPatientName(),tutorial.getBirthDate(),tutorial.getPhoneNumber()));
             return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
         } catch (Exception e) {
+            System.out.println("masuk catch");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/tutorials/{id}")
+    @PutMapping("/patients/{id}")
     public ResponseEntity<Tutorial> updatePatient(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
         Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 
@@ -79,7 +77,7 @@ public class TutorialController {
         }
     }
 
-    @DeleteMapping("/tutorials/{id}")
+    @DeleteMapping("/patients/{id}")
     public ResponseEntity<HttpStatus> deletePatient(@PathVariable("id") long id) {
         try {
             tutorialRepository.deleteById(id);
@@ -91,7 +89,7 @@ public class TutorialController {
 
 }
 
-    // @PostMapping("/tutorials")
+    // @PostMapping("/patients")
     // public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
     //     try {
     //         Tutorial _tutorial = tutorialRepository
@@ -103,7 +101,7 @@ public class TutorialController {
     // }
 
 
-    //     @PutMapping("/tutorials/{id}")
+    //     @PutMapping("/patients/{id}")
     // public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
     //     Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
 

@@ -3,11 +3,12 @@ package com.bezkoder.spring.datajpa.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tutorials")
+@Table(name = "users")
 public class Tutorial {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private long id;
 
     @Column(name = "patient_name")
@@ -56,5 +57,10 @@ public class Tutorial {
     public void setPhoneNumber(String phone_number) {
         this.phone_number = phone_number;
     }
+
+//    @Override
+//    public String toString() {
+//        return "Tutorial [id=" + id + ", patient_name=" + patient_name + ", birth_date=" + birth_date + ", phone_number=" + phone_number + "]";
+//    }
 
 }
