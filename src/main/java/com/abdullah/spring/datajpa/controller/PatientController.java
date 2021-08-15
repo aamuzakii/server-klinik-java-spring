@@ -1,9 +1,10 @@
-package com.bezkoder.spring.datajpa.controller;
+package com.abdullah.spring.datajpa.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.abdullah.spring.datajpa.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +17,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bezkoder.spring.datajpa.model.Tutorial;
-import com.bezkoder.spring.datajpa.repository.TutorialRepository;
+import com.abdullah.spring.datajpa.model.Tutorial;
 
 @CrossOrigin
 @RestController
-public class TutorialController {
+public class PatientController {
 
     @Autowired
-    TutorialRepository tutorialRepository;
+    PatientRepository patientRepository;
     @GetMapping("/patients")
     public ResponseEntity<List<Tutorial>> getAllPatients() {
         try {
             List<Tutorial> tutorials = new ArrayList<Tutorial>();
 
-            tutorialRepository.findAll().forEach(tutorials::add);
+            patientRepository.findAll().forEach(tutorials::add);
 
             if (tutorials.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -44,7 +44,7 @@ public class TutorialController {
 
     @GetMapping("/patients/{id}")
     public ResponseEntity<Tutorial> getPatientById(@PathVariable("id") long id) {
-        Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+        Optional<Tutorial> tutorialData = patientRepository.findById(id);
 
         if (tutorialData.isPresent()) {
             return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
@@ -57,7 +57,7 @@ public class TutorialController {
     public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
         try {
             System.out.println(tutorial);
-            Tutorial _tutorial = tutorialRepository.save(new Tutorial(tutorial.getPatientName(),tutorial.getBirthDate(),tutorial.getPhoneNumber()));
+            Tutorial _tutorial = patientRepository.save(new Tutorial(tutorial.getPatientName(),tutorial.getBirthDate(),tutorial.getPhoneNumber()));
             return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println("masuk catch");
@@ -67,11 +67,11 @@ public class TutorialController {
 
     @PutMapping("/patients/{id}")
     public ResponseEntity<Tutorial> updatePatient(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-        Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
+        Optional<Tutorial> tutorialData = patientRepository.findById(id);
 
         if (tutorialData.isPresent()) {
             Tutorial _tutorial = tutorialData.get();
-            return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
+            return new ResponseEntity<>(patientRepository.save(_tutorial), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -80,7 +80,7 @@ public class TutorialController {
     @DeleteMapping("/patients/{id}")
     public ResponseEntity<HttpStatus> deletePatient(@PathVariable("id") long id) {
         try {
-            tutorialRepository.deleteById(id);
+            patientRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
