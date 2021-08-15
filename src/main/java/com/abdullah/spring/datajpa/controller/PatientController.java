@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.abdullah.spring.datajpa.model.Patient;
 import com.abdullah.spring.datajpa.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.abdullah.spring.datajpa.model.Tutorial;
-
 @CrossOrigin
 @RestController
 public class PatientController {
@@ -26,25 +25,25 @@ public class PatientController {
     @Autowired
     PatientRepository patientRepository;
     @GetMapping("/patients")
-    public ResponseEntity<List<Tutorial>> getAllPatients() {
+    public ResponseEntity<List<Patient>> getAllPatients() {
         try {
-            List<Tutorial> tutorials = new ArrayList<Tutorial>();
+            List<Patient> patients = new ArrayList<Patient>();
 
-            patientRepository.findAll().forEach(tutorials::add);
+            patientRepository.findAll().forEach(patients::add);
 
-            if (tutorials.isEmpty()) {
+            if (patients.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(tutorials, HttpStatus.OK);
+            return new ResponseEntity<>(patients, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/patients/{id}")
-    public ResponseEntity<Tutorial> getPatientById(@PathVariable("id") long id) {
-        Optional<Tutorial> tutorialData = patientRepository.findById(id);
+    public ResponseEntity<Patient> getPatientById(@PathVariable("id") long id) {
+        Optional<Patient> tutorialData = patientRepository.findById(id);
 
         if (tutorialData.isPresent()) {
             return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
@@ -54,11 +53,11 @@ public class PatientController {
     }
 
     @PostMapping("/patients")
-    public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
+    public ResponseEntity<Patient> createTutorial(@RequestBody Patient patient) {
         try {
-            System.out.println(tutorial);
-            Tutorial _tutorial = patientRepository.save(new Tutorial(tutorial.getPatientName(),tutorial.getBirthDate(),tutorial.getPhoneNumber()));
-            return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
+            System.out.println(patient);
+            Patient _patient = patientRepository.save(new Patient(patient.getPatientName(), patient.getBirthDate(), patient.getPhoneNumber()));
+            return new ResponseEntity<>(_patient, HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println("masuk catch");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,12 +65,12 @@ public class PatientController {
     }
 
     @PutMapping("/patients/{id}")
-    public ResponseEntity<Tutorial> updatePatient(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-        Optional<Tutorial> tutorialData = patientRepository.findById(id);
+    public ResponseEntity<Patient> updatePatient(@PathVariable("id") long id, @RequestBody Patient patient) {
+        Optional<Patient> tutorialData = patientRepository.findById(id);
 
         if (tutorialData.isPresent()) {
-            Tutorial _tutorial = tutorialData.get();
-            return new ResponseEntity<>(patientRepository.save(_tutorial), HttpStatus.OK);
+            Patient _patient = tutorialData.get();
+            return new ResponseEntity<>(patientRepository.save(_patient), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -88,29 +87,3 @@ public class PatientController {
     }
 
 }
-
-    // @PostMapping("/patients")
-    // public ResponseEntity<Tutorial> createTutorial(@RequestBody Tutorial tutorial) {
-    //     try {
-    //         Tutorial _tutorial = tutorialRepository
-    //                 .save(new Tutorial(tutorial.getTitle(), tutorial.getDescription(), "nama pasiennnn", "28 05 2009", "08377373"));
-    //         return new ResponseEntity<>(_tutorial, HttpStatus.CREATED);
-    //     } catch (Exception e) {
-    //         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
-
-
-    //     @PutMapping("/patients/{id}")
-    // public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") long id, @RequestBody Tutorial tutorial) {
-    //     Optional<Tutorial> tutorialData = tutorialRepository.findById(id);
-
-    //     if (tutorialData.isPresent()) {
-    //         Tutorial _tutorial = tutorialData.get();
-    //         _tutorial.setTitle(tutorial.getTitle());
-    //         _tutorial.setDescription(tutorial.getDescription());
-    //         return new ResponseEntity<>(tutorialRepository.save(_tutorial), HttpStatus.OK);
-    //     } else {
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-    // }
