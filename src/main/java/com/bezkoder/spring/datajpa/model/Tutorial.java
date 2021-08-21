@@ -6,55 +6,59 @@ import javax.persistence.*;
 @Table(name = "tutorials")
 public class Tutorial {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    @Column(name = "patient_name")
-    private String patient_name;
- 
-    @Column(name = "birth_date")
-    private String birth_date;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "phone_number")
-    private String phone_number;
- 
-    public Tutorial() {
+	@Column(name = "description")
+	private String description;
 
-    }
+	@Column(name = "published")
+	private boolean published;
 
-    public Tutorial(String patient_name, String birth_date, String phone_number) {
-        this.patient_name = patient_name;
-        this.birth_date = birth_date;
-        this.phone_number = phone_number;
-    }
+	public Tutorial() {
 
-    public long getId() {
-        return id;
-    }
+	}
 
-    public String getPatientName() {
-        return patient_name;
-    }
+	public Tutorial(String title, String description, boolean published) {
+		this.title = title;
+		this.description = description;
+		this.published = published;
+	}
 
-    public void setPatientName(String patient_name) {
-        this.patient_name = patient_name;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public String getBirthDate() {
-        return birth_date;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setBirthDate(String birth_date) {
-        this.birth_date = birth_date;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getPhoneNumber() {
-        return phone_number;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setPhoneNumber(String phone_number) {
-        this.phone_number = phone_number;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean isPublished) {
+		this.published = isPublished;
+	}
+
+//	@Override
+//	public String toString() {
+//		return "Tutorial [id=" + id + ", title=" + title + ", desc=" + description + ", published=" + published + "]";
+//	}
 }
